@@ -1,0 +1,39 @@
+# ============================================================
+# CraftSplat-20 核心依赖
+# ============================================================
+# 本文件仅包含项目自身 Python 依赖。
+# 上游工具（COLMAP、Nerfstudio 等）需单独安装，
+# 详见 README.md 安装章节。
+
+# CLI 框架
+typer>=0.9.0
+rich>=13.0.0
+
+# 图像处理
+opencv-python>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# 配置与数据
+PyYAML>=6.0
+jsonschema>=4.17.0
+
+# 进度条与日志
+tqdm>=4.65.0
+
+# 测试
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# 代码质量 (dev)
+ruff>=0.1.0
+
+# ============================================================
+# 上游依赖（需手动安装，不通过 pip 安装）
+# ============================================================
+# - COLMAP: https://colmap.github.io/
+# - Nerfstudio: pip install nerfstudio
+# - gsplat: pip install gsplat (随 Nerfstudio 安装)
+# - SuGaR (可选): https://github.com/Anttwo/SuGaR
+# - 2DGS (可选): https://github.com/hbb1/2d-gaussian-splatting
+# - GS2Mesh (可选): https://github.com/yanivw12/gs2mesh

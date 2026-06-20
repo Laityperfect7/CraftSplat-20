@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CraftSplat-20 Web Viewer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a14;
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header */
+  .header {
+    width: 100%;
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(10,10,20,0.95);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .badge {
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(108,92,231,0.15);
+    color: #a29bfe;
+    border: 1px solid rgba(108,92,231,0.3);
+  }
+
+  /* Upload zone */
+  .upload-zone {
+    width: 100%;
+    max-width: 640px;
+    margin: 60px auto 0;
+    padding: 60px 40px;
+    border: 2px dashed rgba(255,255,255,0.12);
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .upload-zone:hover {
+    border-color: rgba(108,92,231,0.5);
+    background: rgba(108,92,231,0.04);
+  }
+  .upload-zone .icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+  .upload-zone h2 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: #ccc;
+  }
+  .upload-zone p {
+    font-size: 0.8rem;
+    color: #666;
+  }
+  .upload-zone .formats {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .upload-zone .format-tag {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: #999;
+    font-family: monospace;
+  }
+
+  /* Viewer container */
+  #viewer-container {
+    display: none;
+    width: 100%;
+    max-width: 1200px;
+    height: 70vh;
+    margin: 32px auto;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+  }
+  #viewer-container.active { display: block; }
+
+  .placeholder-view {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .placeholder-view .sphere {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%,
+      rgba(108,92,231,0.4) 0%,
+      rgba(0,206,209,0.3) 40%,
+      rgba(255,107,107,0.2) 70%,
+      transparent 100%);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.06); opacity: 1; }
+  }
+  .placeholder-view .info {
+    text-align: center;
+    color: #666;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .placeholder-view .info strong {
+    color: #a29bfe;
+  }
+
+  /* Status bar */
+  .status-bar {
+    margin: 12px auto;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #555;
+    padding: 0 4px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: auto;
+    padding: 24px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #444;
+    line-height: 1.8;
+  }
+  .footer a { color: #a29bfe; text-decoration: none; }
+
+  /* Hidden file input */
+  #file-input { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔮 CraftSplat-20 Viewer</h1>
+  <span class="badge">BETA</span>
+</div>
+
+<div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+  <div class="icon">📂</div>
+  <h2>加载 .ply 或 .splat 文件</h2>
+  <p>点击此处选择文件，或将文件拖拽到页面任意位置</p>
+  <div class="formats">
+    <span class="format-tag">.ply</span>
+    <span class="format-tag">.splat</span>
+    <span class="format-tag">.ksplat</span>
+  </div>
+</div>
+
+<input type="file" id="file-input" accept=".ply,.splat,.ksplat" onchange="handleFile(event)">
+
+<div id="viewer-container">
+  <div class="placeholder-view">
+    <div class="sphere"></div>
+    <div class="info">
+      <strong>3D Viewer — 占位实现</strong><br/>
+      文件已选择，但 WebGL 渲染器尚未集成。<br/>
+      生产版本推荐使用：
+    </div>
+  </div>
+</div>
+
+<div class="status-bar">
+  <span id="status-file">未加载文件</span>
+  <span id="status-points"></span>
+</div>
+
+<div class="footer">
+  <p>
+    CraftSplat-20 Web Viewer (v0.1.0-beta) &nbsp;|&nbsp;
+    生产环境推荐 <a href="https://playcanvas.com/supersplat" target="_blank">SuperSplat</a>
+    或 <a href="https://github.com/mkkellogg/GaussianSplats3D" target="_blank">GaussianSplats3D</a>
+  </p>
+  <p>
+    TODO: 集成 WebGL 渲染器 |
+    <a href="https://github.com/Laityperfect7/CraftSplat-20" target="_blank">GitHub</a>
+  </p>
+</div>
+
+<script>
+  // 拖拽支持
+  const uploadZone = document.getElementById('upload-zone');
+  document.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'rgba(108,92,231,0.7)'; });
+  document.addEventListener('dragleave', e => { e.preventDefault(); uploadZone.style.borderColor = ''; });
+  document.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.style.borderColor = '';
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  });
+
+  function handleFile(event) {
+    const file = event.target.files[0];
+    if (file) processFile(file);
+  }
+
+  function processFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const supported = ['ply', 'splat', 'ksplat'];
+    if (!supported.includes(ext)) {
+      alert('不支持的文件格式。请选择 .ply、.splat 或 .ksplat 文件。');
+      return;
+    }
+
+    document.getElementById('viewer-container').classList.add('active');
+    document.getElementById('status-file').textContent = `📄 ${file.name} (${formatBytes(file.size)})`;
+    document.getElementById('status-points').textContent = '⏳ 解析中...';
+
+    // TODO: 实际解析和渲染
+    // 生产版本应集成:
+    //   - GaussianSplats3D (Three.js) 用于 .ply/.ksplat
+    //   - 或 SuperSplat (PlayCanvas) 用于 .splat
+
+    setTimeout(() => {
+      document.getElementById('status-points').textContent = '⚠️ 渲染引擎未集成（占位）';
+    }, 500);
+  }
+
+  function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+</script>
+
+</body>
+</html>

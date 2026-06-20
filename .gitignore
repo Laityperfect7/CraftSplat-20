@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Project run outputs
+runs/
+outputs/
+craftsplat_runs/
+craftsplat_outputs/
+
+# COLMAP / Nerfstudio artifacts
+sparse/
+dense/
+colmap.db
+transforms.json
+transforms_train.json
+transforms_val.json
+transforms_test.json
+
+# Large model checkpoints
+*.ckpt
+*.pth
+*.pt
+!example_checkpoints/
+
+# Splat exports
+*.ply
+*.splat
+*.ksplat
+*.glb
+
+# Keep directory structure
+!runs/.gitkeep
+!outputs/.gitkeep
+!examples/**/*.txt
+!examples/**/*.json
+
+# Logs
+*.log
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Conda
+*.conda
