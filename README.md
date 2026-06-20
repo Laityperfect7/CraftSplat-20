@@ -1,5 +1,8 @@
 <div align="center">
 
+<!-- Banner Placeholder / 横幅占位符 -->
+<img src="docs/images/banner.png" alt="CraftSplat-20 Banner" width="900"/>
+
 # 🔮 CraftSplat-20
 
 ### *20 张以内文创手办 3D Gaussian Splatting 建模工具链*
@@ -21,6 +24,22 @@
 ## 📖 一句话介绍
 
 **CraftSplat-20** 是一个面向文创产品、手办、小摆件的 **少图 3D Gaussian Splatting 建模工具链**——在理想拍摄条件下，仅需 **20 张以内照片** 即可完成高保真可交互视觉复刻。
+
+<div align="center">
+<img src="docs/images/demo_input.png" alt="Input" width="240"/>
+&nbsp;→&nbsp;
+<img src="docs/images/demo_gaussian.png" alt="Gaussian Splatting" width="240"/>
+&nbsp;→&nbsp;
+<img src="docs/images/demo_orbit.png" alt="Orbit View" width="240"/>
+<br/>
+<em>示例：手办照片（左）→ 3D Gaussian Splatting 重建（中）→ 交互式环绕视角（右）</em>
+<br/>
+<em>Demo: Figurine input (left) → 3DGS reconstruction (center) → Interactive orbit view (right)</em>
+
+> ⚠️ 以上为示意占位图 (illustrative placeholders)，用于文档展示。真实重建效果取决于拍摄质量和训练配置，可替换为你的实际结果。
+> ⚠️ Above images are illustrative placeholders for documentation. Replace with real reconstruction results if available.
+
+</div>
 
 ---
 
@@ -47,6 +66,10 @@
 ---
 
 ## 🗺️ 技术路线
+
+<div align="center">
+<img src="docs/images/pipeline.png" alt="CraftSplat-20 Pipeline" width="800"/>
+</div>
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -243,6 +266,10 @@ craftsplat report RUN_DIR --eval-dir EVAL_DIR -o report.md
 ---
 
 ## 📸 18+2 拍摄协议
+
+<div align="center">
+<img src="docs/images/capture_protocol.png" alt="18+2 Capture Protocol" width="700"/>
+</div>
 
 CraftSplat-20 推荐 **18 张环绕 + 2 张校准** 的拍摄方案：
 
