@@ -5,9 +5,12 @@
 
 # 🔮 CraftSplat-20
 
-### *20 张以内文创手办 3D Gaussian Splatting 建模工具链*
+### *Few-Shot 3D Gaussian Splatting for Cultural-Creative Figurines*
 
-### *Few-shot 3DGS toolchain for cultural-creative figurines — under 20 photos*
+<p align="center">
+  <strong>Turn 20 photos into a high-fidelity 3D Gaussian Splatting model — no scanner, no studio.</strong><br>
+  A production-ready 3DGS pipeline optimized for small-object photogrammetry of cultural and creative artifacts.
+</p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -15,7 +18,7 @@
 [![CI](https://github.com/Laityperfect7/CraftSplat-20/actions/workflows/ci.yml/badge.svg)](https://github.com/Laityperfect7/CraftSplat-20/actions/workflows/ci.yml)
 [![Paper](https://img.shields.io/badge/Paper-3DGS-red.svg)](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/)
 
-**简体中文** | [English](#english)
+**English** | [简体中文](#-一句话介绍)
 
 </div>
 
